@@ -204,20 +204,35 @@
   }
 
   /* ===========================================================
-     SLIDE 1 — SHIFT
+     SLIDE 1 — HERO (centered title + 2-col split + live-feed)
      =========================================================== */
-  .hero-sec{ overflow:hidden; min-height:90vh; display:flex; align-items:center }
-  .hero-sec .wrap{ width:100% }
+  .hero-sec{
+    overflow:hidden;
+    min-height:100vh;
+    padding:120px 0 80px;
+    position:relative;
+  }
   .hero-glow{
     position:absolute; top:-300px; right:-300px;
     width:900px; height:900px;
     background:radial-gradient(circle, rgba(212,165,116,0.07) 0%, transparent 60%);
     pointer-events:none;
   }
+  .hero-top{
+    text-align:center;
+    margin-bottom:48px;
+  }
+  .hero-top .eyebrow{
+    justify-content:center;
+    display:inline-flex;
+  }
   .hero-h1{
-    font-size:clamp(40px, 5.6vw, 84px);
-    margin-top:32px;
+    font-size:clamp(36px, 4.6vw, 68px);
+    margin-top:24px;
     max-width:1100px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.06;
   }
   .hero-h1 .typed-cursor{
     display:inline-block;
@@ -230,31 +245,40 @@
   }
   @keyframes blink{ 50%{ opacity:0 } }
 
+  .hero-split{
+    display:grid;
+    grid-template-columns:1fr 1.05fr;
+    gap:64px;
+    align-items:start;
+  }
+  @media (max-width:980px){
+    .hero-split{ grid-template-columns:1fr; gap:48px }
+  }
+  .hero-left{
+    padding-top:24px;
+  }
   .hero-sub{
-    margin-top:32px;
     color:var(--text-dim);
-    font-size:18px;
-    max-width:580px;
+    font-size:17px;
+    line-height:1.55;
+    max-width:480px;
     opacity:0;
     transform:translateY(12px);
     transition:opacity 0.9s ease, transform 0.9s cubic-bezier(0.22,1,0.36,1);
   }
   .hero-sub.in{ opacity:1; transform:translateY(0) }
-
   .hero-stats{
-    margin-top:60px;
-    display:flex; align-items:flex-end; gap:40px;
+    margin-top:48px;
+    display:flex; align-items:flex-end; gap:32px;
     flex-wrap:wrap;
     opacity:0;
     transition:opacity 0.9s ease 0.4s;
   }
   .hero-stats.in{ opacity:1 }
-  .hero-stat{
-    display:flex; flex-direction:column; gap:8px;
-  }
+  .hero-stat{ display:flex; flex-direction:column; gap:8px }
   .hero-stat .lbl{
     font-family:'JetBrains Mono', monospace;
-    font-size:11px;
+    font-size:10.5px;
     color:var(--text-muted);
     text-transform:uppercase;
     letter-spacing:0.12em;
@@ -262,21 +286,241 @@
   .hero-stat .val{
     font-family:'Fraunces', serif;
     font-weight:300;
-    font-size:48px;
+    font-size:42px;
     line-height:1;
     color:var(--accent);
     letter-spacing:-0.03em;
     transition:color 0.6s ease;
   }
-  .hero-stat .val small{ font-size:18px; color:var(--text-muted); margin-left:4px }
+  .hero-stat .val small{ font-size:16px; color:var(--text-muted); margin-left:4px }
   .hero-stat.fade .val{ color:var(--text-muted) }
   .hero-stat-arrow{
-    color:var(--text-muted); font-size:24px;
-    margin-bottom:12px;
+    color:var(--text-muted); font-size:22px;
+    margin-bottom:10px;
+  }
+
+  /* live feed going off-screen */
+  .hero-right{
+    position:relative;
+    height:78vh;
+    min-height:520px;
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid var(--border);
+    background:var(--bg-elev);
+    padding:18px 18px 0;
+  }
+  .hero-feed-head{
+    display:flex; align-items:center; gap:10px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:14px;
+  }
+  .hero-feed-head .live-dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--success);
+    box-shadow:0 0 8px var(--success);
+    animation:pulse-live 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse-live{ 50%{ opacity:0.4 } }
+  .hero-feed-head .lbl{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-muted);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+  }
+  .hero-feed-head .lbl.right{ margin-left:auto }
+  .hero-feed{
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .feed-row{
+    display:grid;
+    grid-template-columns:30px 1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:12px 14px;
+    border-radius:11px;
+    background:var(--bg-elev-2);
+    border:1px solid var(--border);
+    font-size:13.5px;
+    opacity:0;
+    transform:translateY(10px);
+    animation:feedIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation-delay:var(--d);
+  }
+  @keyframes feedIn{
+    to{ opacity:1; transform:translateY(0) }
+  }
+  .feed-row .ch-ico{ width:24px; height:24px }
+  .feed-name{ color:var(--text); font-weight:500 }
+  .feed-meta{ color:var(--text-muted); font-size:11px; font-family:'JetBrains Mono', monospace; letter-spacing:0.04em; margin-top:2px }
+  .feed-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    padding:4px 9px;
+    border-radius:999px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .feed-tag.qual{ background:rgba(127,184,143,0.13); color:var(--success); border:1px solid rgba(127,184,143,0.3) }
+  .feed-tag.rej{ background:rgba(210,139,139,0.13); color:var(--danger); border:1px solid rgba(210,139,139,0.3) }
+  .feed-tag.rev{ background:rgba(138,164,212,0.13); color:var(--info); border:1px solid rgba(138,164,212,0.3) }
+  /* fade gradient at bottom — feed disappears off-screen */
+  .hero-feed-mask{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:140px;
+    background:linear-gradient(180deg, transparent 0%, var(--bg-elev) 80%);
+    pointer-events:none;
   }
 
   /* ===========================================================
-     SLIDE 2 — DAY OF HR (clock-driven left, calm right)
+     SLIDE 2 — FOR WHOM
+     =========================================================== */
+  .persona-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    margin-top:8px;
+  }
+  @media (max-width:880px){ .persona-grid{ grid-template-columns:1fr } }
+  .persona{
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:32px 28px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:transform 0.4s ease, border-color 0.4s ease;
+  }
+  .persona:hover{
+    transform:translateY(-3px);
+    border-color:var(--border-strong);
+  }
+  .persona-icon{
+    width:54px; height:54px;
+    border-radius:14px;
+    background:rgba(212,165,116,0.08);
+    display:flex; align-items:center; justify-content:center;
+    font-size:28px;
+    border:1px solid rgba(212,165,116,0.2);
+  }
+  .persona h3{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:22px;
+    line-height:1.15;
+    margin-top:6px;
+  }
+  .persona-pain{
+    color:var(--danger);
+    font-size:14px;
+    line-height:1.5;
+    padding-left:14px;
+    border-left:2px solid rgba(210,139,139,0.4);
+  }
+  .persona-gain{
+    color:var(--text);
+    font-size:14px;
+    line-height:1.55;
+    padding-left:14px;
+    border-left:2px solid var(--accent);
+  }
+
+  .for-whom-foot{
+    margin-top:48px;
+    display:flex; align-items:center; gap:16px;
+    flex-wrap:wrap;
+    padding:20px 24px;
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+  .for-whom-foot .lbl{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+  }
+  .for-whom-tags{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .fwt{
+    padding:6px 12px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border-strong);
+    font-size:12px;
+    color:var(--text-dim);
+  }
+
+  /* Roles block (replaces simple tag list) */
+  .roles-block{
+    margin-top:48px;
+    padding:28px 28px 24px;
+    background:var(--bg-elev);
+    border:1px solid var(--border);
+    border-radius:18px;
+  }
+  .roles-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; flex-wrap:wrap;
+    margin-bottom:20px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .roles-head .lbl{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+  }
+  .roles-head .lbl-sub{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:13px;
+    color:var(--accent);
+  }
+  .roles-grid{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:16px;
+  }
+  @media (max-width:980px){ .roles-grid{ grid-template-columns:repeat(2, 1fr) } }
+  @media (max-width:520px){ .roles-grid{ grid-template-columns:1fr } }
+  .role-block{
+    display:flex; flex-direction:column; gap:8px;
+    padding:14px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--border);
+    transition:transform 0.3s ease, border-color 0.3s ease;
+  }
+  .role-block:hover{
+    transform:translateY(-2px);
+    border-color:var(--border-strong);
+  }
+  .role-icon{
+    font-size:22px;
+    line-height:1;
+  }
+  .role-title{
+    font-size:13px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .role-list{
+    font-size:11.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.02em;
+  }
+
+  /* ===========================================================
+     DAY OF HR (clock-driven left, calm right)
      =========================================================== */
   .day-grid{
     display:grid;
@@ -449,7 +693,7 @@
     background:var(--bg-elev);
     border:1px solid var(--border);
     border-radius:24px;
-    padding:64px 40px;
+    padding:48px 32px 32px;
     position:relative;
     overflow:hidden;
   }
@@ -483,9 +727,9 @@
   }
   .j-line-fill{
     stroke:var(--accent);
-    stroke-width:2;
-    stroke-dasharray:240;
-    stroke-dashoffset:240;
+    stroke-width:2.5;
+    stroke-dasharray:280;
+    stroke-dashoffset:280;
     fill:none;
     transition:stroke-dashoffset 0.7s cubic-bezier(0.22,1,0.36,1);
   }
@@ -494,23 +738,30 @@
   .journey-stage.in .j-line-fill.seg-3{ stroke-dashoffset:0; transition-delay:0.95s }
   .journey-stage.in .j-line-fill.seg-4{ stroke-dashoffset:0; transition-delay:1.35s }
   .j-label{
-    fill:var(--text-dim);
+    fill:var(--text);
     font-family:'Manrope', sans-serif;
-    font-size:13px;
-    font-weight:500;
+    font-size:17px;
+    font-weight:600;
+  }
+  .j-sub{
+    fill:var(--text-muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
   }
   .j-num{
     fill:var(--text-muted);
     font-family:'JetBrains Mono', monospace;
-    font-size:10px;
-    letter-spacing:0.1em;
+    font-size:13px;
+    letter-spacing:0.12em;
+    font-weight:500;
   }
 
   /* ===========================================================
      SLIDE 5 — CHAT (STICKY PIN, scroll-controlled)
      =========================================================== */
   section.pin-chat{
-    height:380vh;
+    height:240vh;
     border-top:1px solid var(--border);
     position:relative;
   }
@@ -789,6 +1040,15 @@
     margin-bottom:14px;
   }
   .score-explain strong{ color:var(--text); font-weight:600 }
+  .score-explain .flag{
+    display:inline-block;
+    font-size:14px;
+    margin-right:4px;
+    line-height:1;
+  }
+  .score-explain .flag.stop{ color:var(--danger) }
+  .score-explain .flag.yellow{ color:var(--warn) }
+  .score-explain .flag.green{ color:var(--success) }
 
   /* funnel below the scoring */
   .funnel{
@@ -842,7 +1102,7 @@
      SLIDE 7 — CHANNELS (sticky-pin, scroll-driven lines)
      =========================================================== */
   section.pin-channels{
-    height:300vh;
+    height:260vh;
     border-top:1px solid var(--border);
     position:relative;
   }
@@ -853,7 +1113,7 @@
     display:flex;
     align-items:center;
     overflow:hidden;
-    padding:80px 0 60px;
+    padding:60px 0 50px;
   }
   .channels-stage{
     margin-top:8px;
@@ -861,9 +1121,9 @@
     background:var(--bg-elev);
     border:1px solid var(--border);
     border-radius:20px;
-    padding:32px 24px;
+    padding:24px 24px;
     overflow:hidden;
-    min-height:380px;
+    max-height:62vh;
   }
   .channels-svg{ width:100%; height:auto; display:block }
   .ch-line{
@@ -1041,7 +1301,7 @@
      SLIDE 9 — CANDIDATE HISTORY (sticky pin scrub)
      =========================================================== */
   section.pin-history{
-    height:380vh;
+    height:340vh;
     border-top:1px solid var(--border);
     position:relative;
   }
@@ -1050,10 +1310,10 @@
     top:0;
     height:100vh;
     display:grid;
-    grid-template-columns:1fr 1.05fr;
-    gap:40px;
+    grid-template-columns:1fr 1.1fr;
+    gap:48px;
     align-items:center;
-    padding:80px 32px 80px;
+    padding:60px 32px 60px;
     max-width:1280px;
     margin:0 auto;
   }
@@ -1062,20 +1322,20 @@
     .pin-history-sticky{ position:relative; height:auto; grid-template-columns:1fr; padding:60px 24px }
   }
   .ph-text{
-    display:flex; flex-direction:column; gap:14px;
-    max-width:460px;
+    display:flex; flex-direction:column; gap:16px;
+    max-width:480px;
   }
   .ph-text h2{
     font-family:'Fraunces', serif;
     font-weight:300;
-    font-size:clamp(26px, 3.2vw, 40px);
+    font-size:clamp(28px, 3.4vw, 42px);
     line-height:1.08;
     letter-spacing:-0.02em;
   }
   .ph-text h2 em{ font-style:italic; color:var(--accent); font-weight:400 }
   .ph-text p{
     color:var(--text-dim);
-    font-size:14.5px;
+    font-size:15px;
     line-height:1.55;
   }
 
@@ -1083,50 +1343,43 @@
     background:var(--bg-elev);
     border:1px solid var(--border);
     border-radius:18px;
-    padding:22px 24px;
+    padding:24px 28px;
     box-shadow:0 30px 70px rgba(0,0,0,0.4);
-    max-height:calc(100vh - 160px);
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
   }
   .ph-card-head{
     display:flex; align-items:center; gap:14px;
-    padding-bottom:14px;
+    padding-bottom:16px;
     border-bottom:1px solid var(--border);
     margin-bottom:18px;
-    flex-shrink:0;
   }
   .ph-avatar{
-    width:44px; height:44px;
+    width:46px; height:46px;
     border-radius:50%;
     background:linear-gradient(135deg, #5d4e3d, #8a7050);
     display:flex; align-items:center; justify-content:center;
     font-family:'Fraunces', serif;
-    font-size:17px;
+    font-size:18px;
     font-weight:500;
     color:#fff;
   }
-  .ph-id .name{ font-size:15px; font-weight:600 }
+  .ph-id .name{ font-size:16px; font-weight:600 }
   .ph-id .meta{ font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono', monospace; letter-spacing:0.04em }
   .ph-id .meta.warn{ color:var(--danger); margin-top:3px }
 
   .timeline{
     position:relative;
-    padding-left:28px;
-    flex:1;
-    overflow:hidden;
+    padding-left:30px;
   }
   .timeline::before{
     content:'';
     position:absolute;
-    left:6px; top:4px; bottom:4px;
+    left:7px; top:6px; bottom:6px;
     width:1.5px;
     background:var(--border);
   }
   .timeline-fill{
     position:absolute;
-    left:6px; top:4px;
+    left:7px; top:6px;
     width:1.5px;
     height:0%;
     background:linear-gradient(180deg, var(--accent), var(--accent-soft));
@@ -1134,17 +1387,17 @@
   }
   .tl-event{
     position:relative;
-    padding-bottom:12px;
+    padding-bottom:14px;
     opacity:0.3;
     transition:opacity 0.4s ease;
   }
-  .tl-event:last-child{ padding-bottom:4px }
+  .tl-event:last-child{ padding-bottom:0 }
   .tl-event.on{ opacity:1 }
   .tl-event::before{
     content:'';
     position:absolute;
-    left:-26px; top:4px;
-    width:12px; height:12px;
+    left:-28px; top:5px;
+    width:13px; height:13px;
     border-radius:50%;
     background:var(--bg-elev);
     border:2px solid var(--border-strong);
@@ -1162,24 +1415,23 @@
   }
   .tl-date{
     font-family:'JetBrains Mono', monospace;
-    font-size:10px;
+    font-size:10.5px;
     color:var(--text-muted);
     text-transform:uppercase;
     letter-spacing:0.1em;
-    margin-bottom:3px;
+    margin-bottom:4px;
   }
-  .tl-title{ font-size:13.5px; color:var(--text); font-weight:500; line-height:1.3 }
-  .tl-desc{ font-size:12px; color:var(--text-dim); margin-top:2px; line-height:1.4 }
+  .tl-title{ font-size:14px; color:var(--text); font-weight:500; line-height:1.3 }
+  .tl-desc{ font-size:12.5px; color:var(--text-dim); margin-top:3px; line-height:1.45 }
   .tl-event.alert .tl-title{ color:var(--danger) }
 
   .ph-verdict{
-    margin-top:14px;
-    padding:12px 14px;
+    margin-top:18px;
+    padding:14px 16px;
     border-radius:11px;
     background:rgba(210,139,139,0.06);
     border:1px solid rgba(210,139,139,0.25);
-    display:flex; gap:10px; align-items:flex-start;
-    flex-shrink:0;
+    display:flex; gap:12px; align-items:flex-start;
     opacity:0;
     transform:translateY(6px);
     transition:opacity 0.6s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1);
@@ -1187,7 +1439,7 @@
   .ph-verdict.on{ opacity:1; transform:translateY(0) }
   .ph-verdict .ic{
     flex-shrink:0;
-    width:24px; height:24px;
+    width:26px; height:26px;
     border-radius:50%;
     background:rgba(210,139,139,0.2);
     color:var(--danger);
@@ -1195,12 +1447,12 @@
     font-weight:700;
     font-size:13px;
   }
-  .ph-verdict .text{ font-size:12px; color:var(--text); line-height:1.45 }
+  .ph-verdict .text{ font-size:12.5px; color:var(--text); line-height:1.5 }
   .ph-verdict .text strong{ color:var(--danger) }
 
   .ph-progress{
     position:absolute;
-    bottom:32px;
+    bottom:24px;
     left:50%;
     transform:translateX(-50%);
     width:200px;
@@ -1270,26 +1522,33 @@
     padding:18px;
     background:linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.15) 100%);
     position:relative;
+    min-height:480px;
   }
   .tg-stack{
     position:relative;
     width:100%;
   }
   .tg-state{
-    display:none;
+    position:absolute;
+    inset:0;
     opacity:0;
     transform:translateX(16px);
     transition:opacity 0.35s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    pointer-events:none;
   }
   .tg-state.active{
-    display:block;
     opacity:1;
     transform:translateX(0);
+    pointer-events:auto;
   }
-  .tg-state.exiting{
-    display:block;
+  .tg-state.exit-left{
     opacity:0;
     transform:translateX(-16px);
+    pointer-events:none;
+  }
+  .tg-state.exit-right{
+    opacity:0;
+    transform:translateX(16px);
     pointer-events:none;
   }
   .tg-card{
@@ -1387,6 +1646,54 @@
     transition:opacity 0.4s ease;
   }
   .tg-notif:hover .tg-hint{ opacity:1 }
+
+  /* ===========================================================
+     WHY US slide
+     =========================================================== */
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    margin-top:8px;
+  }
+  @media (max-width:880px){ .why-grid{ grid-template-columns:1fr } }
+  .why-card{
+    background:var(--bg-elev);
+    padding:32px 28px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:background 0.4s ease;
+    min-height:240px;
+  }
+  .why-card:hover{ background:var(--bg-elev-2) }
+  .why-card.highlight{
+    background:linear-gradient(180deg, rgba(212,165,116,0.08) 0%, var(--bg-elev) 70%);
+  }
+  .why-card.highlight:hover{
+    background:linear-gradient(180deg, rgba(212,165,116,0.12) 0%, var(--bg-elev-2) 70%);
+  }
+  .why-num{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:300;
+    color:var(--accent);
+    font-size:36px;
+    line-height:1;
+  }
+  .why-card h3{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:20px;
+    line-height:1.2;
+  }
+  .why-card p{
+    color:var(--text-dim);
+    font-size:14px;
+    line-height:1.55;
+  }
 
   /* ===========================================================
      SLIDE 11 — STATUS / WHAT'S READY
@@ -1731,37 +2038,248 @@
 <div class="progress-rail" id="progressRail"></div>
 
 <!-- =================================================================
-     SLIDE 1 — SHIFT
+     SLIDE 1 — WHAT IS IT (centered title + compact left + live-feed right)
      ================================================================= -->
 <section class="hero-sec" data-slide="1">
   <div class="hero-glow"></div>
   <div class="wrap">
-    <span class="eyebrow">сдвиг в найме</span>
-    <h1 class="display hero-h1" id="heroH1">
-      <span class="typed-text"></span><span class="typed-cursor"></span>
-    </h1>
-    <p class="hero-sub" id="heroSub">
-      Особенно в HoReCa, где каждый день простоя стоит выручки, а каждый ушедший к конкуренту повар обходится в недели поиска.
-    </p>
+    <div class="hero-top">
+      <span class="eyebrow">платформа автоматизации найма</span>
+      <h1 class="display hero-h1" id="heroH1">
+        <span class="typed-text"></span><span class="typed-cursor"></span>
+      </h1>
+    </div>
 
-    <div class="hero-stats" id="heroStats">
-      <div class="hero-stat fade">
-        <span class="lbl">2018 — время реакции на отклик</span>
-        <span class="val">~6<small>часов</small></span>
+    <div class="hero-split">
+      <div class="hero-left">
+        <p class="hero-sub" id="heroSub">
+          Особенно в HoReCa, где каждый день простоя стоит выручки, а каждый ушедший к конкуренту повар обходится в недели поиска.
+        </p>
+        <div class="hero-stats" id="heroStats">
+          <div class="hero-stat fade">
+            <span class="lbl">2018 — время реакции на отклик</span>
+            <span class="val">~6<small>часов</small></span>
+          </div>
+          <span class="hero-stat-arrow">→</span>
+          <div class="hero-stat">
+            <span class="lbl">2026 — время реакции у успешных</span>
+            <span class="val"><span data-counter="30" data-suffix=" сек">0</span></span>
+          </div>
+        </div>
       </div>
-      <span class="hero-stat-arrow">→</span>
-      <div class="hero-stat">
-        <span class="lbl">2026 — время реакции у успешных</span>
-        <span class="val"><span data-counter="30" data-suffix=" сек">0</span></span>
+
+      <div class="hero-right" id="heroRight">
+        <div class="hero-feed-head">
+          <span class="live-dot"></span>
+          <span class="lbl">входящие · live</span>
+          <span class="lbl right">сегодня</span>
+        </div>
+        <div class="hero-feed">
+          <div class="feed-row" style="--d:0.2s">
+            <svg class="ch-ico"><use href="#ic-avito"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Дмитрий К., повар</div>
+              <div class="feed-meta">опыт 4 года · документы есть</div>
+            </div>
+            <span class="feed-tag qual">qualified</span>
+          </div>
+          <div class="feed-row" style="--d:0.45s">
+            <svg class="ch-ico"><use href="#ic-hh"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Ольга М., менеджер смены</div>
+              <div class="feed-meta">опыт 6 лет · кейсы прислала</div>
+            </div>
+            <span class="feed-tag rev">на просмотре</span>
+          </div>
+          <div class="feed-row" style="--d:0.7s">
+            <svg class="ch-ico"><use href="#ic-tg"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Артур С., официант</div>
+              <div class="feed-meta">нет документов · авто-стоп</div>
+            </div>
+            <span class="feed-tag rej">rejected</span>
+          </div>
+          <div class="feed-row" style="--d:0.95s">
+            <svg class="ch-ico"><use href="#ic-ig"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Юлия Р., официант</div>
+              <div class="feed-meta">опыт 2 года · голосовое ок</div>
+            </div>
+            <span class="feed-tag qual">qualified</span>
+          </div>
+          <div class="feed-row" style="--d:1.2s">
+            <svg class="ch-ico"><use href="#ic-vk"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Игорь Л., бариста</div>
+              <div class="feed-meta">бросил анкету · напоминание</div>
+            </div>
+            <span class="feed-tag rev">drop-off</span>
+          </div>
+          <div class="feed-row" style="--d:1.45s">
+            <svg class="ch-ico"><use href="#ic-avito"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Мария Б., хост</div>
+              <div class="feed-meta">опыт 3 года · 91 балл</div>
+            </div>
+            <span class="feed-tag qual">qualified</span>
+          </div>
+          <div class="feed-row" style="--d:1.7s">
+            <svg class="ch-ico"><use href="#ic-hh"/></svg>
+            <div class="feed-id">
+              <div class="feed-name">Рустам М., повар</div>
+              <div class="feed-meta">опыт 5 лет · на просмотре</div>
+            </div>
+            <span class="feed-tag rev">на просмотре</span>
+          </div>
+        </div>
+        <div class="hero-feed-mask"></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- =================================================================
-     SLIDE 2 — DAY OF HR
+     SLIDE 2 — FOR WHOM
      ================================================================= -->
 <section data-slide="2">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow anim-up">для кого</span>
+      <h2 class="anim-up delay-1">Для тех, кто <em>устал от ручного найма</em>.</h2>
+      <p class="anim-up delay-2">Если найм линейного персонала съедает ваше время и деньги — вы попали по адресу. Особенно если у вас несколько точек.</p>
+    </div>
+
+    <div class="persona-grid">
+      <div class="persona anim-up delay-3">
+        <div class="persona-icon">👤</div>
+        <h3>HR-менеджер<br>ресторана или сети</h3>
+        <p class="persona-pain">Тонет в десятках одинаковых диалогов каждый день. Половина откликов — мимо.</p>
+        <p class="persona-gain">Получает только тех, кто прошёл квалификацию. Ведёт смысленную работу, а не разгребает шум.</p>
+      </div>
+      <div class="persona anim-up delay-4">
+        <div class="persona-icon">🏛</div>
+        <h3>Владелец сети<br>ресторанов</h3>
+        <p class="persona-pain">Каждый незакрытый день — потерянная выручка. Текучка съедает прибыль.</p>
+        <p class="persona-gain">Любая вакансия закрывается за неделю. База кандидатов всегда тёплая. Текучка под контролем.</p>
+      </div>
+      <div class="persona anim-up delay-5">
+        <div class="persona-icon">📍</div>
+        <h3>Управляющий<br>точкой</h3>
+        <p class="persona-pain">Повар уволился вечером — утром нет повара. Звонишь в офис, ждёшь, теряешь смену.</p>
+        <p class="persona-gain">Запасные кандидаты в один клик. Из базы выбираешь — система предложит троих с высоким скорингом.</p>
+      </div>
+    </div>
+
+    <div class="roles-block anim-up delay-6">
+      <div class="roles-head">
+        <span class="lbl">какие позиции закрывает</span>
+        <span class="lbl-sub">5 функциональных блоков, &gt; 20 должностей</span>
+      </div>
+      <div class="roles-grid">
+        <div class="role-block">
+          <div class="role-icon">🍽</div>
+          <div class="role-title">Зал</div>
+          <div class="role-list">официант · хостес · раннер · бармен · бариста · кассир</div>
+        </div>
+        <div class="role-block">
+          <div class="role-icon">📋</div>
+          <div class="role-title">Управление залом</div>
+          <div class="role-list">администратор · менеджер смены · управляющий</div>
+        </div>
+        <div class="role-block">
+          <div class="role-icon">👨‍🍳</div>
+          <div class="role-title">Кухня</div>
+          <div class="role-list">повар · повар-универсал · су-шеф · шеф-повар · пекарь · кондитер</div>
+        </div>
+        <div class="role-block">
+          <div class="role-icon">🧹</div>
+          <div class="role-title">Поддержка</div>
+          <div class="role-list">мойщик · уборщик · кладовщик · комплектовщик · закупщик</div>
+        </div>
+        <div class="role-block">
+          <div class="role-icon">🛵</div>
+          <div class="role-title">Доставка</div>
+          <div class="role-list">курьер · сборщик · сотрудник выдачи</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================
+     SLIDE 3 — HOW IT WORKS (= old slide 4 journey)
+     Moved up to match Natalia's structure: что → для кого → как
+     ================================================================= -->
+<section data-slide="3">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow anim-up">как это работает</span>
+      <h2 class="anim-up delay-1">Весь процесс <em>в одной картинке</em>.</h2>
+      <p class="anim-up delay-2">От публикации вакансии до выхода человека на смену. Каждый шаг автоматизирован, каждый шаг виден в системе.</p>
+    </div>
+
+    <div class="journey-stage anim-up delay-3" id="journeyStage">
+      <svg class="journey-svg" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid meet">
+        <!-- 4 segmented dashed background lines -->
+        <path class="j-line" d="M 145 180 Q 220 110 305 180" />
+        <path class="j-line" d="M 395 180 Q 490 250 555 180" />
+        <path class="j-line" d="M 645 180 Q 740 110 805 180" />
+        <path class="j-line" d="M 895 180 Q 990 250 1045 180" />
+        <!-- 4 segmented fill paths -->
+        <path class="j-line-fill seg seg-1" d="M 145 180 Q 220 110 305 180" />
+        <path class="j-line-fill seg seg-2" d="M 395 180 Q 490 250 555 180" />
+        <path class="j-line-fill seg seg-3" d="M 645 180 Q 740 110 805 180" />
+        <path class="j-line-fill seg seg-4" d="M 895 180 Q 990 250 1045 180" />
+
+        <!-- Node 1: Vacancy -->
+        <g class="j-node" transform="translate(100, 180)">
+          <circle class="j-node-circle" r="48" />
+          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="34" font-family="Manrope">📋</text>
+          <text class="j-num" x="0" y="-72" text-anchor="middle">01</text>
+          <text class="j-label" x="0" y="90" text-anchor="middle">Вакансия</text>
+          <text class="j-sub" x="0" y="110" text-anchor="middle">критерии и анкета</text>
+        </g>
+        <!-- Node 2: Channels -->
+        <g class="j-node" transform="translate(350, 180)">
+          <circle class="j-node-circle" r="48" />
+          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="34">📡</text>
+          <text class="j-num" x="0" y="-72" text-anchor="middle">02</text>
+          <text class="j-label" x="0" y="90" text-anchor="middle">Каналы</text>
+          <text class="j-sub" x="0" y="110" text-anchor="middle">avito · hh · tg · ig · vk</text>
+        </g>
+        <!-- Node 3: Bot quals -->
+        <g class="j-node" transform="translate(600, 180)">
+          <circle class="j-node-circle" r="48" />
+          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="34">🤖</text>
+          <text class="j-num" x="0" y="-72" text-anchor="middle">03</text>
+          <text class="j-label" x="0" y="90" text-anchor="middle">Квалификация</text>
+          <text class="j-sub" x="0" y="110" text-anchor="middle">скоринг по критериям</text>
+        </g>
+        <!-- Node 4: Deep chat -->
+        <g class="j-node" transform="translate(850, 180)">
+          <circle class="j-node-circle" r="48" />
+          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="34">💬</text>
+          <text class="j-num" x="0" y="-72" text-anchor="middle">04</text>
+          <text class="j-label" x="0" y="90" text-anchor="middle">Углублённый чат</text>
+          <text class="j-sub" x="0" y="110" text-anchor="middle">детали и нюансы</text>
+        </g>
+        <!-- Node 5: Hire -->
+        <g class="j-node" transform="translate(1100, 180)">
+          <circle class="j-node-circle final" r="54" />
+          <text class="j-node-icon final" text-anchor="middle" dominant-baseline="central" font-size="36">✓</text>
+          <text class="j-num" x="0" y="-78" text-anchor="middle">05</text>
+          <text class="j-label" x="0" y="96" text-anchor="middle">Идеальный кандидат</text>
+          <text class="j-sub" x="0" y="116" text-anchor="middle">готов к собеседованию</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================
+     SLIDE 4 — DAY OF HR (was slide 2)
+     ================================================================= -->
+<section data-slide="4">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">сегодня</span>
@@ -1799,7 +2317,7 @@
 <!-- =================================================================
      SLIDE 3 — PROMISED LAND (LIGHT slide)
      ================================================================= -->
-<section class="promised" data-slide="3" data-theme="light">
+<section class="promised" data-slide="5" data-theme="light">
   <div class="wrap">
     <span class="eyebrow anim-up">через 30 дней</span>
     <h2 class="anim-up delay-1">Найм перестаёт быть <em>пожирателем времени</em>.</h2>
@@ -1826,74 +2344,12 @@
   </div>
 </section>
 
-<!-- =================================================================
-     SLIDE 4 — JOURNEY (path drawn by scroll)
-     ================================================================= -->
-<section data-slide="4">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow anim-up">путь кандидата</span>
-      <h2 class="anim-up delay-1">Весь процесс <em>в одной картинке</em>.</h2>
-      <p class="anim-up delay-2">От публикации вакансии до выхода человека на смену — каждый шаг автоматизирован и виден.</p>
-    </div>
-
-    <div class="journey-stage anim-up delay-3" id="journeyStage">
-      <svg class="journey-svg" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid meet">
-        <!-- 4 segmented dashed background lines (between node edges, not through them) -->
-        <path class="j-line" d="M 121 140 Q 200 80 290 140" />
-        <path class="j-line" d="M 371 140 Q 470 200 540 140" />
-        <path class="j-line" d="M 621 140 Q 720 80 790 140" />
-        <path class="j-line" d="M 871 140 Q 970 200 1058 140" />
-        <!-- 4 segmented fill paths (drawn one by one with stagger) -->
-        <path class="j-line-fill seg seg-1" d="M 121 140 Q 200 80 290 140" />
-        <path class="j-line-fill seg seg-2" d="M 371 140 Q 470 200 540 140" />
-        <path class="j-line-fill seg seg-3" d="M 621 140 Q 720 80 790 140" />
-        <path class="j-line-fill seg seg-4" d="M 871 140 Q 970 200 1058 140" />
-
-        <!-- Node 1: Vacancy -->
-        <g class="j-node" transform="translate(80, 140)">
-          <circle class="j-node-circle" r="36" />
-          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="22" font-family="Manrope">📋</text>
-          <text class="j-num" x="0" y="-58" text-anchor="middle">01</text>
-          <text class="j-label" x="0" y="78" text-anchor="middle">Вакансия</text>
-        </g>
-        <!-- Node 2: Channels -->
-        <g class="j-node" transform="translate(330, 140)">
-          <circle class="j-node-circle" r="36" />
-          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="22">📡</text>
-          <text class="j-num" x="0" y="-58" text-anchor="middle">02</text>
-          <text class="j-label" x="0" y="78" text-anchor="middle">Каналы</text>
-        </g>
-        <!-- Node 3: Bot quals -->
-        <g class="j-node" transform="translate(580, 140)">
-          <circle class="j-node-circle" r="36" />
-          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="22">🤖</text>
-          <text class="j-num" x="0" y="-58" text-anchor="middle">03</text>
-          <text class="j-label" x="0" y="78" text-anchor="middle">Квалификация</text>
-        </g>
-        <!-- Node 4: Deep chat -->
-        <g class="j-node" transform="translate(830, 140)">
-          <circle class="j-node-circle" r="36" />
-          <text class="j-node-icon" text-anchor="middle" dominant-baseline="central" font-size="22">💬</text>
-          <text class="j-num" x="0" y="-58" text-anchor="middle">04</text>
-          <text class="j-label" x="0" y="78" text-anchor="middle">Углублённый чат</text>
-        </g>
-        <!-- Node 5: Hire -->
-        <g class="j-node" transform="translate(1100, 140)">
-          <circle class="j-node-circle final" r="40" />
-          <text class="j-node-icon final" text-anchor="middle" dominant-baseline="central" font-size="22">✓</text>
-          <text class="j-num" x="0" y="-62" text-anchor="middle">05</text>
-          <text class="j-label" x="0" y="82" text-anchor="middle">Идеальный кандидат</text>
-        </g>
-      </svg>
-    </div>
-  </div>
-</section>
+<!-- (Journey moved to slide 3 — see below) -->
 
 <!-- =================================================================
-     SLIDE 5 — CHAT (STICKY PIN, scroll-controlled)
+     CHAT (STICKY PIN, scroll-controlled) — was slide 5
      ================================================================= -->
-<section class="pin-chat tall" data-slide="5" id="pinChat">
+<section class="pin-chat tall" data-slide="6" id="pinChat">
   <div class="pin-chat-sticky">
     <div class="pin-chat-head">
       <span class="eyebrow">магия 1</span>
@@ -1932,7 +2388,7 @@
 <!-- =================================================================
      SLIDE 6 — SCORING + FUNNEL
      ================================================================= -->
-<section data-slide="6">
+<section data-slide="7">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">магия 2</span>
@@ -1954,12 +2410,13 @@
           </div>
         </div>
         <div class="score-body" id="scoreBody">
-          <div class="crit-row"><div class="ic ok">✓</div><div class="label">возраст 18+</div><div class="val">32</div></div>
-          <div class="crit-row"><div class="ic ok">✓</div><div class="label">гражданство РФ / РБ</div><div class="val">РФ</div></div>
+          <div class="crit-row"><div class="ic ok">✓</div><div class="label">релевантный цех (горячий)</div><div class="val">да</div></div>
           <div class="crit-row"><div class="ic ok">✓</div><div class="label">опыт &gt; 1 года поваром</div><div class="val">4 года</div></div>
+          <div class="crit-row"><div class="ic ok">✓</div><div class="label">стабильность · работа &gt; 6 мес</div><div class="val">2 года</div></div>
+          <div class="crit-row"><div class="ic ok">✓</div><div class="label">работа по техкартам</div><div class="val">да</div></div>
           <div class="crit-row"><div class="ic ok">✓</div><div class="label">медкнижка</div><div class="val">есть</div></div>
-          <div class="crit-row"><div class="ic warn">!</div><div class="label">район — близость к точке</div><div class="val">~25 мин</div></div>
-          <div class="crit-row"><div class="ic ok">✓</div><div class="label">готов к графику 5/2</div><div class="val">да</div></div>
+          <div class="crit-row"><div class="ic warn">!</div><div class="label">близость к точке</div><div class="val">~25 мин</div></div>
+          <div class="crit-row"><div class="ic ok">✓</div><div class="label">скорость выхода</div><div class="val">3 дня</div></div>
         </div>
         <div class="score-foot">
           <div class="score-bar-wrap">
@@ -1974,10 +2431,10 @@
       </div>
 
       <div class="score-explain">
-        <p class="anim-up delay-3" style="font-size:17px;color:var(--text);font-weight:500;line-height:1.5">Каждая вакансия — свой набор фильтров. Без программирования.</p>
-        <p class="anim-up delay-4"><strong>Жёсткие критерии</strong> — мгновенный авто-отказ. Возраст, гражданство, документы. Кандидат получает вежливый ответ, не зависает в очереди HR.</p>
-        <p class="anim-up delay-5"><strong>Мягкие критерии</strong> — повод для просмотра. Близость к точке, специфика опыта, особые навыки. Решение остаётся за HR, но с подсветкой что и почему.</p>
-        <p class="anim-up delay-6"><strong>Голосовое и фото</strong> — для позиций, где важна речь и внешний вид. Сохраняется в базу, HR оценивает в один клик.</p>
+        <p class="anim-up delay-3" style="font-size:17px;color:var(--text);font-weight:500;line-height:1.5">Каждая вакансия — свой набор фильтров. Под каждую позицию HoReCa.</p>
+        <p class="anim-up delay-4"><span class="flag stop">●</span> <strong>Стоп-факторы</strong> — мгновенный авто-отказ. Нет медкнижки, не подходит график, агрессивный стиль. Кандидат получает вежливый ответ, HR не отвлекают.</p>
+        <p class="anim-up delay-5"><span class="flag yellow">●</span> <strong>Жёлтые флаги</strong> — повод для просмотра. Без опыта, но сильная мотивация. Короткий стаж, но хорошее понимание процессов. Идёт к HR с подсветкой почему.</p>
+        <p class="anim-up delay-6"><span class="flag green">●</span> <strong>Зелёные флаги</strong> — переводим дальше. Релевантный опыт, спокойный тон, документы в порядке. HR получает готовый профиль с резюме и оценкой.</p>
       </div>
     </div>
 
@@ -2019,7 +2476,7 @@
 <!-- =================================================================
      SLIDE 7 — CHANNELS (sticky-pin, scroll-progressive)
      ================================================================= -->
-<section class="pin-channels tall" data-slide="7" id="pinChannels">
+<section class="pin-channels tall" data-slide="8" id="pinChannels">
   <div class="pin-channels-sticky">
     <div class="wrap">
       <div class="section-head" style="margin-bottom:24px">
@@ -2029,23 +2486,23 @@
       </div>
 
       <div class="channels-stage" id="channelsStage">
-        <svg class="channels-svg" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid meet">
+        <svg class="channels-svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid meet">
           <!-- background lines (always dashed) -->
-          <path class="ch-line" d="M 240 70 Q 600 70 900 240" />
-          <path class="ch-line" d="M 240 170 Q 600 170 900 240" />
-          <path class="ch-line" d="M 240 270 Q 600 270 900 240" />
-          <path class="ch-line" d="M 240 370 Q 600 370 900 240" />
-          <path class="ch-line" d="M 240 440 Q 600 440 900 240" />
+          <path class="ch-line" d="M 240 60 Q 600 60 900 210" />
+          <path class="ch-line" d="M 240 150 Q 600 150 900 210" />
+          <path class="ch-line" d="M 240 240 Q 600 240 900 210" />
+          <path class="ch-line" d="M 240 330 Q 600 330 900 210" />
+          <path class="ch-line" d="M 240 380 Q 600 380 900 210" />
 
           <!-- fill lines — scroll-controlled via stroke-dashoffset -->
-          <path class="ch-line-fill scroll-line" data-len="700" d="M 240 70 Q 600 70 900 240" />
-          <path class="ch-line-fill scroll-line" data-len="700" d="M 240 170 Q 600 170 900 240" />
-          <path class="ch-line-fill scroll-line" data-len="690" d="M 240 270 Q 600 270 900 240" />
-          <path class="ch-line-fill scroll-line" data-len="710" d="M 240 370 Q 600 370 900 240" />
-          <path class="ch-line-fill scroll-line" data-len="780" d="M 240 440 Q 600 440 900 240" />
+          <path class="ch-line-fill scroll-line" data-len="700" d="M 240 60 Q 600 60 900 210" />
+          <path class="ch-line-fill scroll-line" data-len="700" d="M 240 150 Q 600 150 900 210" />
+          <path class="ch-line-fill scroll-line" data-len="690" d="M 240 240 Q 600 240 900 210" />
+          <path class="ch-line-fill scroll-line" data-len="710" d="M 240 330 Q 600 330 900 210" />
+          <path class="ch-line-fill scroll-line" data-len="780" d="M 240 380 Q 600 380 900 210" />
 
           <!-- channel logo nodes -->
-          <g class="ch-node n0" transform="translate(80, 70)">
+          <g class="ch-node n0" transform="translate(80, 60)">
             <foreignObject x="0" y="-22" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><use href="#ic-avito"/></svg>
             </foreignObject>
@@ -2053,7 +2510,7 @@
             <text class="ch-meta" x="60" y="14">линейный персонал</text>
             <text class="ch-stat" x="60" y="42">42<tspan font-size="13" fill="var(--text-muted)" dx="4">откликов · 38% qual</tspan></text>
           </g>
-          <g class="ch-node n1" transform="translate(80, 170)">
+          <g class="ch-node n1" transform="translate(80, 150)">
             <foreignObject x="0" y="-22" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><use href="#ic-hh"/></svg>
             </foreignObject>
@@ -2061,7 +2518,7 @@
             <text class="ch-meta" x="60" y="14">менеджеры, бэк-офис</text>
             <text class="ch-stat" x="60" y="42">26<tspan font-size="13" fill="var(--text-muted)" dx="4">откликов · 54% qual</tspan></text>
           </g>
-          <g class="ch-node n2" transform="translate(80, 270)">
+          <g class="ch-node n2" transform="translate(80, 240)">
             <foreignObject x="0" y="-22" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><use href="#ic-tg"/></svg>
             </foreignObject>
@@ -2069,7 +2526,7 @@
             <text class="ch-meta" x="60" y="14">тематические каналы</text>
             <text class="ch-stat" x="60" y="42">18<tspan font-size="13" fill="var(--text-muted)" dx="4">откликов · 41% qual</tspan></text>
           </g>
-          <g class="ch-node n3" transform="translate(80, 370)">
+          <g class="ch-node n3" transform="translate(80, 330)">
             <foreignObject x="0" y="-22" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><use href="#ic-ig"/></svg>
             </foreignObject>
@@ -2077,7 +2534,7 @@
             <text class="ch-meta" x="60" y="14">профиль ресторана</text>
             <text class="ch-stat" x="60" y="42">9<tspan font-size="13" fill="var(--text-muted)" dx="4">откликов · 33% qual</tspan></text>
           </g>
-          <g class="ch-node n4" transform="translate(80, 440)">
+          <g class="ch-node n4" transform="translate(80, 380)">
             <foreignObject x="0" y="-22" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><use href="#ic-vk"/></svg>
             </foreignObject>
@@ -2088,12 +2545,12 @@
 
           <!-- target Telegram-bot box; stroke draws progressively at the end -->
           <g class="ch-target ch-node">
-            <rect class="ch-target-bg" id="chTargetBg" x="900" y="180" width="220" height="120" rx="14" ry="14" />
-            <foreignObject x="980" y="200" width="48" height="48">
+            <rect class="ch-target-bg" id="chTargetBg" x="900" y="150" width="220" height="120" rx="14" ry="14" />
+            <foreignObject x="980" y="170" width="48" height="48">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 32 32"><use href="#ic-tg"/></svg>
             </foreignObject>
-            <text class="ch-label" x="1010" y="270" text-anchor="middle">Единый Telegram-bot</text>
-            <text class="ch-meta" x="1010" y="288" text-anchor="middle">метка источника зашита в /start</text>
+            <text class="ch-label" x="1010" y="240" text-anchor="middle">Единый Telegram-bot</text>
+            <text class="ch-meta" x="1010" y="258" text-anchor="middle">метка источника зашита в /start</text>
           </g>
         </svg>
       </div>
@@ -2107,7 +2564,7 @@
 <!-- =================================================================
      SLIDE 8 — DATABASE
      ================================================================= -->
-<section data-slide="8">
+<section data-slide="9">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">магия 4</span>
@@ -2198,7 +2655,7 @@
 <!-- =================================================================
      SLIDE 9 — CANDIDATE HISTORY (sticky pin scrub)
      ================================================================= -->
-<section class="pin-history tall" data-slide="9" id="pinHistory">
+<section class="pin-history tall" data-slide="10" id="pinHistory">
   <div class="pin-history-sticky">
     <div class="ph-text">
       <span class="eyebrow">магия 5</span>
@@ -2220,33 +2677,33 @@
         <div class="timeline-fill" id="phTimelineFill"></div>
         <div class="tl-event" data-step="0">
           <div class="tl-date">янв 2025</div>
-          <div class="tl-title">Принят · Пушкин-1</div>
-          <div class="tl-desc">Скоринг 82. Вышел на смену.</div>
+          <div class="tl-title">Принят на повара · Пушкин-1</div>
+          <div class="tl-desc">Скоринг 82. Прошёл собеседование, вышел на смену.</div>
         </div>
         <div class="tl-event alert" data-step="1">
           <div class="tl-date">апр 2025</div>
-          <div class="tl-title">Уволен · 3 мес работы</div>
-          <div class="tl-desc">Конфликт с су-шефом. Отметка в карточке.</div>
+          <div class="tl-title">Уволен по собственному</div>
+          <div class="tl-desc">3 месяца на позиции. Конфликт с су-шефом, отметка в карточке.</div>
         </div>
         <div class="tl-event" data-step="2">
           <div class="tl-date">сен 2025</div>
           <div class="tl-title">Принят повторно · Пушкин-2</div>
-          <div class="tl-desc">HR не знал об истории, нанял заново.</div>
+          <div class="tl-desc">Через 5 месяцев. HR не знал об истории, нанял заново.</div>
         </div>
         <div class="tl-event alert" data-step="3">
           <div class="tl-date">ноя 2025</div>
-          <div class="tl-title">Уволен · 2 мес работы</div>
-          <div class="tl-desc">Систематические опоздания, штрафы.</div>
+          <div class="tl-title">Уволен · опоздания</div>
+          <div class="tl-desc">2 месяца на позиции. Систематические опоздания, штрафы 3 раза.</div>
         </div>
         <div class="tl-event" data-step="4">
           <div class="tl-date">сегодня</div>
-          <div class="tl-title">Отклик · Пушкин-3</div>
-          <div class="tl-desc">Скоринг 84. Готов выйти завтра.</div>
+          <div class="tl-title">Отклик на повара · Пушкин-3</div>
+          <div class="tl-desc">Скоринг 84. Документы в порядке. Готов выйти завтра.</div>
         </div>
       </div>
       <div class="ph-verdict" id="phVerdict">
         <div class="ic">!</div>
-        <div class="text"><strong>Внимание.</strong> Уже работал в сети 2 раза. Средний срок 2.5 мес. Конфликт, опоздания. Подумайте дважды.</div>
+        <div class="text"><strong>Внимание.</strong> Кандидат уже работал в сети 2 раза. Средний срок: 2.5 месяца. История инцидентов: конфликт, опоздания. Рекомендуем подумать дважды или пересмотреть условия.</div>
       </div>
     </div>
     <div class="ph-progress"><div class="ph-progress-fill" id="phProgressFill"></div></div>
@@ -2256,7 +2713,7 @@
 <!-- =================================================================
      SLIDE 10 — HR NOTIFICATION
      ================================================================= -->
-<section data-slide="10">
+<section data-slide="11">
   <div class="wrap">
     <div class="hr-grid">
       <div>
@@ -2328,13 +2785,13 @@
               <div class="tg-card in">
                 <div class="head">👤 Профиль · Дмитрий Кузьмин</div>
                 <div class="tg-prof">
-                  <div class="tg-prof-row"><span class="k">возраст</span><span class="v">32</span></div>
                   <div class="tg-prof-row"><span class="k">опыт</span><span class="v">4 года поваром</span></div>
+                  <div class="tg-prof-row"><span class="k">цех</span><span class="v">горячий · станция мясо/рыба</span></div>
                   <div class="tg-prof-row"><span class="k">последнее место</span><span class="v">Пушкин рестогрупп · 2 года</span></div>
+                  <div class="tg-prof-row"><span class="k">техкарты</span><span class="v">да · знает граммовку</span></div>
                   <div class="tg-prof-row"><span class="k">документы</span><span class="v">медкнижка, паспорт РФ</span></div>
                   <div class="tg-prof-row"><span class="k">район</span><span class="v">Беляево · ~25 мин до точки</span></div>
-                  <div class="tg-prof-row"><span class="k">график</span><span class="v">5/2 — готов</span></div>
-                  <div class="tg-prof-row"><span class="k">голосовое</span><span class="v" style="color:#d4a574">▶ 0:18</span></div>
+                  <div class="tg-prof-row"><span class="k">готов выйти</span><span class="v">через 3 дня</span></div>
                   <div class="tg-prof-row"><span class="k">канал</span><span class="v">Avito · 2 ч назад</span></div>
                 </div>
                 <div class="footer" style="margin-top:14px">
@@ -2385,9 +2842,55 @@
 </section>
 
 <!-- =================================================================
+     WHY US (NEW slide per Natalia's request — first-mover, unique)
+     ================================================================= -->
+<section data-slide="12">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow anim-up">почему alma</span>
+      <h2 class="anim-up delay-1">Не первый бот для найма. <em>Первый — глубокий.</em></h2>
+      <p class="anim-up delay-2">На рынке есть простые чат-боты для откликов. Они спрашивают пять вопросов и сваливают всё в таблицу. Мы делаем по-другому.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card anim-up delay-3">
+        <div class="why-num">01</div>
+        <h3>Кастом, не коробка</h3>
+        <p>Каждая система настраивается под ваши вакансии, ваши критерии, ваши каналы. Это не SaaS-конструктор «как у всех», это решение под вашу сеть.</p>
+      </div>
+      <div class="why-card anim-up delay-3">
+        <div class="why-num">02</div>
+        <h3>Полный цикл, а не фрагмент</h3>
+        <p>От размещения вакансии до выхода человека на смену. Не «бот собрал контакты — а дальше сами». Каждый этап работает в системе и сохраняется в базе.</p>
+      </div>
+      <div class="why-card anim-up delay-4">
+        <div class="why-num">03</div>
+        <h3>База с историей кандидатов</h3>
+        <p>Это пока ни у кого нет в HoReCa-сегменте. Кандидат, который у вас уже работал — система это знает и предупредит. На уровне сети — репутационная база.</p>
+      </div>
+      <div class="why-card anim-up delay-4">
+        <div class="why-num">04</div>
+        <h3>Партнёрская модель</h3>
+        <p>Мы работаем как часть вашей команды, а не подрядчик с почасовой оплатой. Когда у вас новый сценарий — мы быстро встраиваем его в систему.</p>
+      </div>
+      <div class="why-card anim-up delay-5">
+        <div class="why-num">05</div>
+        <h3>Стек уже доказан</h3>
+        <p>Базовые модули собираются на n8n + Supabase + OpenAI — этот стек работает в десятках наших клиентских проектов. Не эксперимент, а проверенная связка.</p>
+      </div>
+      <div class="why-card highlight anim-up delay-5">
+        <div class="why-num">06</div>
+        <h3>Первые в HoReCa</h3>
+        <p>На рынке нет специализированного решения именно для линейного персонала ресторанов и кафе. Зайти первыми — значит занять нишу, пока конкуренты не заметили.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================
      SLIDE 11 — STATUS
      ================================================================= -->
-<section data-slide="11">
+<section data-slide="13">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">статус</span>
@@ -2434,7 +2937,7 @@
 <!-- =================================================================
      SLIDE 12 — PRICING
      ================================================================= -->
-<section data-slide="12">
+<section data-slide="14">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">стоимость</span>
@@ -2478,7 +2981,7 @@
 <!-- =================================================================
      SLIDE 13 — ROADMAP
      ================================================================= -->
-<section data-slide="13">
+<section data-slide="15">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">дорожная карта</span>
@@ -2527,7 +3030,7 @@
 <!-- =================================================================
      SLIDE 14 — CTA
      ================================================================= -->
-<section class="cta" data-slide="14">
+<section class="cta" data-slide="16">
   <div class="wrap">
     <span class="eyebrow anim-up" style="display:inline-flex">запустим</span>
     <h2 class="anim-up delay-1">Пилот на одной точке. <em>30 дней.</em></h2>
@@ -2738,25 +3241,27 @@ staggerEvents('dayGood', 220);
   const leftScript = [
     { who:'bot', text:'Здравствуйте! Я бот рекрутинга. Подберу подходящую вакансию за 2 минуты. На какую позицию откликаетесь?' },
     { who:'user', text:'Официант' },
-    { who:'bot', text:'Отлично. Сколько вам лет?' },
-    { who:'user', text:'19' },
-    { who:'bot', text:'Гражданство РФ или РБ?' },
-    { who:'user', text:'РФ' },
-    { who:'bot', text:'Есть оформленная медкнижка?' },
-    { who:'user', text:'Нет, никогда не делал' },
-    { who:'bot', text:'Понял. К сожалению, для официанта медкнижка обязательна. Если оформите — напишите, рассмотрим заново.' },
+    { who:'bot', text:'Удобен ли вам сменный график, вечерние смены и работа в выходные?' },
+    { who:'user', text:'Да, готов к любому графику' },
+    { who:'bot', text:'Есть ли действующая медкнижка или готовность быстро её оформить?' },
+    { who:'user', text:'Нет, никогда не оформлял. И возиться с этим не планирую' },
+    { who:'bot', text:'Понял. К сожалению, для работы официантом медкнижка — обязательный допуск. Если решите оформить, напишите нам, рассмотрим заново. Удачи в поиске!' },
     { who:'sys', kind:'rej', text:'auto-reject · нет документов' },
   ];
   const rightScript = [
     { who:'bot', text:'Здравствуйте! Я бот рекрутинга. На какую позицию откликаетесь?' },
     { who:'user', text:'Повар' },
-    { who:'bot', text:'Здорово. Сколько вам лет?' },
-    { who:'user', text:'32' },
-    { who:'bot', text:'Сколько лет работаете поваром?' },
-    { who:'user', text:'4 года, последние два — Пушкин рестогрупп' },
-    { who:'bot', text:'А кстати, какая зарплата?' },
+    { who:'bot', text:'Здорово. В каком цехе или формате кухни у вас был основной опыт?' },
+    { who:'user', text:'Горячий цех. Последние 2 года в ресторане русской кухни, станция мясо/рыба' },
+    { who:'bot', text:'Сколько работали на последнем месте?' },
+    { who:'user', text:'2 года в Пушкин рестогрупп. Стейки, рыба на гриле, заготовка соусов' },
+    { who:'bot', text:'Работали по техкартам и соблюдению граммовки?' },
+    { who:'user', text:'Да, без техкарт нельзя. За отклонения штрафовали' },
+    { who:'bot', text:'Медкнижка есть?' },
+    { who:'user', text:'Да, действующая. А кстати какая зарплата?' },
     { who:'bot', text:'70 000 ₽ на старте, после 3 месяцев пересмотр. Премия за выходные смены, питание за счёт ресторана.' },
-    { who:'user', text:'Подходит. Куда дальше?' },
+    { who:'bot', text:'Когда готовы выйти на пробную смену?' },
+    { who:'user', text:'Через 3 дня, мне подходит' },
     { who:'bot', text:'Передаю профиль HR. Свяжется в течение дня.' },
     { who:'sys', kind:'qual', text:'qualified · 86/100 · отправлено hr' },
   ];
@@ -2805,9 +3310,10 @@ staggerEvents('dayGood', 220);
     const progress = clamp(passed / total, 0, 1);
     fillEl.style.width = (progress * 100) + '%';
 
-    // hide steps until ~5% scroll, then start revealing
-    const startThreshold = 0.04;
-    const adjusted = clamp((progress - startThreshold) / (0.92 - startThreshold), 0, 1);
+    // hide steps until ~5% scroll, then start revealing; finish at 80%
+    const startThreshold = 0.05;
+    const endThreshold = 0.80;
+    const adjusted = clamp((progress - startThreshold) / (endThreshold - startThreshold), 0, 1);
     const eased = smooth(adjusted);
 
     // continuous progress through scripts, last message fades in partially
