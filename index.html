@@ -23,7 +23,7 @@
     --accent-soft:#b88550;
     --accent-glow:rgba(212,165,116,0.18);
 
-    /* light slide palette (Promised Land) */
+    /* light slide palette */
     --cream:#f3eadb;
     --cream-deep:#e8d9be;
     --ink:#2a1f17;
@@ -36,6 +36,9 @@
 
     --border:rgba(255,255,255,0.07);
     --border-strong:rgba(255,255,255,0.13);
+    --surface-soft:rgba(255,255,255,0.02);
+    --surface:rgba(255,255,255,0.04);
+    --surface-strong:rgba(255,255,255,0.08);
     --bubble-bot:#1d3557;
     --bubble-user:#2a2a32;
 
@@ -45,6 +48,100 @@
     --tg:#2AABEE;
     --ig:#DD2A7B;
     --vk:#0077FF;
+  }
+
+  /* ============================================================
+     TONE SYSTEM — each section gets a data-tone class.
+     All tones share the same warm-amber accent for cohesion.
+     ============================================================ */
+
+  /* onyx: deep dark (default base) */
+  [data-tone="onyx"]{
+    --bg:#0a0a0c;
+    --bg-elev:#121216;
+    --bg-elev-2:#1a1a20;
+    --text:#eeeeee;
+    --text-dim:#9a9aa1;
+    --text-muted:#5a5a62;
+    --border:rgba(255,255,255,0.07);
+    --border-strong:rgba(255,255,255,0.13);
+    --surface-soft:rgba(255,255,255,0.02);
+    --surface:rgba(255,255,255,0.04);
+    --surface-strong:rgba(255,255,255,0.08);
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  /* sepia: warm dark brown — for process/mechanics */
+  [data-tone="sepia"]{
+    --bg:#1a1410;
+    --bg-elev:#231b15;
+    --bg-elev-2:#2c221a;
+    --text:#f0e6d8;
+    --text-dim:#a89b86;
+    --text-muted:#6b5d4c;
+    --border:rgba(232,210,180,0.08);
+    --border-strong:rgba(232,210,180,0.16);
+    --surface-soft:rgba(232,210,180,0.025);
+    --surface:rgba(232,210,180,0.05);
+    --surface-strong:rgba(232,210,180,0.09);
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  /* slate: muted warm grey — for status/admin slides */
+  [data-tone="slate"]{
+    --bg:#171618;
+    --bg-elev:#1f1d20;
+    --bg-elev-2:#262428;
+    --text:#ebe7e0;
+    --text-dim:#9a9590;
+    --text-muted:#5f5b58;
+    --border:rgba(235,231,224,0.07);
+    --border-strong:rgba(235,231,224,0.14);
+    --surface-soft:rgba(235,231,224,0.025);
+    --surface:rgba(235,231,224,0.05);
+    --surface-strong:rgba(235,231,224,0.08);
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  /* sand: light cream — for emotional/promised-land/CTA */
+  [data-tone="sand"]{
+    --bg:#f3eadb;
+    --bg-elev:#fbf5e9;
+    --bg-elev-2:#e8d9be;
+    --text:#2a1f17;
+    --text-dim:#5d4e3d;
+    --text-muted:#8a7a5f;
+    --border:rgba(42,31,23,0.08);
+    --border-strong:rgba(42,31,23,0.16);
+    --surface-soft:rgba(42,31,23,0.025);
+    --surface:rgba(42,31,23,0.05);
+    --surface-strong:rgba(42,31,23,0.09);
+    --accent:#b88550;
+    --accent-bright:#a47542;
+    --accent-soft:#8e6035;
+    --accent-glow:rgba(184,133,80,0.2);
+    --bubble-bot:#2a4f7a;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  /* navbar adapts to current tone of the section in view */
+  body.is-tone-sand nav.top{
+    background:rgba(243,234,219,0.72);
+  }
+  body.is-tone-sand nav.top .wordmark{ color:var(--ink) }
+  body.is-tone-sand nav.top .nav-meta{ color:var(--ink-dim) }
+  body.is-tone-sand .progress-rail .dot{ background:rgba(42,31,23,0.2) }
+  body.is-tone-sand .progress-rail .dot.active{ background:#b88550; box-shadow:none }
+
+  body.is-tone-sepia nav.top{
+    background:rgba(26,20,16,0.72);
+  }
+  body.is-tone-slate nav.top{
+    background:rgba(23,22,24,0.72);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -60,6 +157,10 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     overflow-x:hidden;
+    transition:background 0.6s ease;
+  }
+  section[data-tone]{
+    transition:background 0.6s ease, color 0.6s ease, border-color 0.6s ease;
   }
 
   /* ambient grain — subtle */
@@ -135,9 +236,7 @@
     letter-spacing:0.1em;
     text-transform:uppercase;
   }
-  body.is-light nav.top{ background:rgba(243,234,219,0.7); color:var(--ink) }
-  body.is-light nav.top .wordmark{ color:var(--ink) }
-  body.is-light nav.top .nav-meta{ color:var(--ink-dim) }
+  /* is-light deprecated — replaced by is-tone-sand */
 
   .pulse{
     width:7px; height:7px; border-radius:50%;
@@ -170,8 +269,8 @@
     box-shadow:0 0 8px var(--accent-glow);
     transform:scale(1.4);
   }
-  body.is-light .progress-rail .dot{ background:rgba(42,31,23,0.2) }
-  body.is-light .progress-rail .dot.active{ background:var(--accent-soft); box-shadow:none }
+  body.is-tone-sand .progress-rail .dot{ background:rgba(42,31,23,0.2) }
+  body.is-tone-sand .progress-rail .dot.active{ background:var(--accent-soft); box-shadow:none }
   @media (max-width:780px){ .progress-rail{ display:none } }
 
   /* sections common */
@@ -449,7 +548,7 @@
   .fwt{
     padding:6px 12px;
     border-radius:999px;
-    background:rgba(255,255,255,0.04);
+    background:var(--surface);
     border:1px solid var(--border-strong);
     font-size:12px;
     color:var(--text-dim);
@@ -494,7 +593,7 @@
     display:flex; flex-direction:column; gap:8px;
     padding:14px;
     border-radius:10px;
-    background:rgba(255,255,255,0.02);
+    background:var(--surface-soft);
     border:1px solid var(--border);
     transition:transform 0.3s ease, border-color 0.3s ease;
   }
@@ -582,11 +681,10 @@
   .day-col.good .day-event .text em{ color:var(--success) }
 
   /* ===========================================================
-     SLIDE 3 — PROMISED LAND (LIGHT contrast slide)
+     PROMISED LAND specifics (now uses sand tone)
      =========================================================== */
   section.promised{
-    background:linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
-    color:var(--ink);
+    background:linear-gradient(180deg, #f3eadb 0%, #e8d9be 100%);
     border-top:none;
     padding:160px 0 140px;
     position:relative;
@@ -597,7 +695,7 @@
     position:absolute; top:50%; left:50%;
     transform:translate(-50%,-50%);
     width:1200px; height:1200px;
-    background:radial-gradient(circle, rgba(212,165,116,0.18) 0%, transparent 60%);
+    background:radial-gradient(circle, rgba(184,133,80,0.18) 0%, transparent 60%);
     pointer-events:none;
   }
   .promised h2{
@@ -605,12 +703,12 @@
     font-weight:300;
     font-size:clamp(36px, 5vw, 64px);
     line-height:1.05;
-    color:var(--ink);
+    color:var(--text);
     max-width:880px;
   }
   .promised h2 em{ font-style:italic; color:var(--accent-soft); font-weight:400 }
-  .promised .eyebrow{ color:var(--ink-dim) }
-  .promised .eyebrow::before{ background:var(--ink-dim) }
+  .promised .eyebrow{ color:var(--text-dim) }
+  .promised .eyebrow::before{ background:var(--text-dim) }
 
   .promised-grid{
     display:grid;
@@ -643,7 +741,7 @@
   .promised-item p{
     font-size:18px;
     line-height:1.55;
-    color:var(--ink);
+    color:var(--text);
   }
   .promised-item p strong{ font-weight:600 }
 
@@ -900,7 +998,7 @@
     transform:translateX(-50%);
     width:200px;
     height:2px;
-    background:rgba(255,255,255,0.08);
+    background:var(--surface-strong);
     border-radius:1px;
     overflow:hidden;
   }
@@ -961,7 +1059,7 @@
     display:flex; align-items:center; gap:6px;
     padding:5px 9px;
     border-radius:8px;
-    background:rgba(255,255,255,0.04);
+    background:var(--surface);
     font-size:11px;
     font-family:'JetBrains Mono', monospace;
     color:var(--text-dim);
@@ -1001,7 +1099,7 @@
   }
   .score-bar-track{
     flex:1; height:6px;
-    background:rgba(255,255,255,0.06);
+    background:var(--surface);
     border-radius:3px;
     overflow:hidden;
   }
@@ -1191,7 +1289,7 @@
     transform:translateX(-50%);
     width:200px;
     height:2px;
-    background:rgba(255,255,255,0.08);
+    background:var(--surface-strong);
     border-radius:1px;
     overflow:hidden;
   }
@@ -1231,7 +1329,7 @@
     padding:6px 12px;
     border-radius:999px;
     border:1px solid var(--border-strong);
-    background:rgba(255,255,255,0.02);
+    background:var(--surface-soft);
     font-size:11px;
     font-family:'JetBrains Mono', monospace;
     color:var(--text-dim);
@@ -1267,7 +1365,7 @@
     transition:opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1), background 0.5s ease;
   }
   .db-table tbody tr.in{ opacity:1; transform:translateY(0) }
-  .db-table tbody tr:hover{ background:rgba(255,255,255,0.02) }
+  .db-table tbody tr:hover{ background:var(--surface-soft) }
   .db-table tbody tr.highlight{
     background:rgba(212,165,116,0.06);
     box-shadow:inset 3px 0 0 var(--accent);
@@ -1287,7 +1385,7 @@
   .score-mini{ display:flex; align-items:center; gap:8px }
   .score-mini-track{
     width:60px; height:4px;
-    background:rgba(255,255,255,0.06);
+    background:var(--surface);
     border-radius:2px;
     overflow:hidden;
   }
@@ -1457,7 +1555,7 @@
     transform:translateX(-50%);
     width:200px;
     height:2px;
-    background:rgba(255,255,255,0.08);
+    background:var(--surface-strong);
     border-radius:1px;
     overflow:hidden;
   }
@@ -1589,7 +1687,7 @@
   .tg-btn:hover{ transform:translateY(-1px); filter:brightness(1.08) }
   .tg-btn:active{ transform:translateY(0) scale(0.98) }
   .tg-btn.primary{ background:var(--accent); color:#1a1a20 }
-  .tg-btn.ghost{ background:rgba(255,255,255,0.07); color:#fff }
+  .tg-btn.ghost{ background:var(--surface-strong); color:#fff }
   .tg-btn.danger{ background:transparent; color:var(--danger); border:1px solid rgba(210,139,139,0.4) }
   .tg-time{ font-size:10px; color:var(--text-muted); margin-top:6px; font-family:'JetBrains Mono', monospace; text-align:right }
 
@@ -1599,7 +1697,7 @@
     margin-top:6px;
   }
   .mini-msg-bot{
-    background:rgba(255,255,255,0.07);
+    background:var(--surface-strong);
     padding:8px 11px;
     border-radius:9px;
     font-size:12.5px;
@@ -2040,7 +2138,7 @@
 <!-- =================================================================
      SLIDE 1 — WHAT IS IT (centered title + compact left + live-feed right)
      ================================================================= -->
-<section class="hero-sec" data-slide="1">
+<section class="hero-sec" data-slide="1" data-tone="onyx">
   <div class="hero-glow"></div>
   <div class="wrap">
     <div class="hero-top">
@@ -2141,7 +2239,7 @@
 <!-- =================================================================
      SLIDE 2 — FOR WHOM
      ================================================================= -->
-<section data-slide="2">
+<section data-slide="2" data-tone="sand">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">для кого</span>
@@ -2160,7 +2258,7 @@
         <div class="persona-icon">🏛</div>
         <h3>Владелец сети<br>ресторанов</h3>
         <p class="persona-pain">Каждый незакрытый день — потерянная выручка. Текучка съедает прибыль.</p>
-        <p class="persona-gain">Любая вакансия закрывается за неделю. База кандидатов всегда тёплая. Текучка под контролем.</p>
+        <p class="persona-gain">Срок закрытия вакансий сокращается в разы. База кандидатов всегда тёплая. Текучка под контролем.</p>
       </div>
       <div class="persona anim-up delay-5">
         <div class="persona-icon">📍</div>
@@ -2210,7 +2308,7 @@
      SLIDE 3 — HOW IT WORKS (= old slide 4 journey)
      Moved up to match Natalia's structure: что → для кого → как
      ================================================================= -->
-<section data-slide="3">
+<section data-slide="3" data-tone="sepia">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">как это работает</span>
@@ -2279,7 +2377,7 @@
 <!-- =================================================================
      SLIDE 4 — DAY OF HR (was slide 2)
      ================================================================= -->
-<section data-slide="4">
+<section data-slide="4" data-tone="onyx">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">сегодня</span>
@@ -2317,14 +2415,14 @@
 <!-- =================================================================
      SLIDE 3 — PROMISED LAND (LIGHT slide)
      ================================================================= -->
-<section class="promised" data-slide="5" data-theme="light">
+<section class="promised" data-slide="5" data-tone="sand" data-theme="light">
   <div class="wrap">
     <span class="eyebrow anim-up">через 30 дней</span>
     <h2 class="anim-up delay-1">Найм перестаёт быть <em>пожирателем времени</em>.</h2>
 
     <div class="promised-grid">
       <div class="promised-list">
-        <div class="promised-item anim-up delay-2"><span class="num">01</span><p><strong>Любая вакансия закрывается за неделю</strong>, а не за месяц. Меньше простоев в смене, меньше переплат за срочный найм.</p></div>
+        <div class="promised-item anim-up delay-2"><span class="num">01</span><p><strong>Срок закрытия линейных вакансий сокращается в разы.</strong> Меньше простоев в смене, меньше переплат за срочный найм.</p></div>
         <div class="promised-item anim-up delay-3"><span class="num">02</span><p>HR говорит только с теми, кто <strong>реально подходит</strong>. Не с потоком, не с шумом, не со случайными людьми.</p></div>
         <div class="promised-item anim-up delay-4"><span class="num">03</span><p>У тебя всегда есть <strong>тёплая база на запас</strong>. Если повар ушёл вечером — к утру есть пятёрка кандидатов.</p></div>
         <div class="promised-item anim-up delay-5"><span class="num">04</span><p>Ты знаешь, какой канал даёт лучших, и <strong>не платишь за тот, который не работает</strong>.</p></div>
@@ -2349,7 +2447,7 @@
 <!-- =================================================================
      CHAT (STICKY PIN, scroll-controlled) — was slide 5
      ================================================================= -->
-<section class="pin-chat tall" data-slide="6" id="pinChat">
+<section class="pin-chat tall" data-slide="6" data-tone="sepia" id="pinChat">
   <div class="pin-chat-sticky">
     <div class="pin-chat-head">
       <span class="eyebrow">магия 1</span>
@@ -2388,7 +2486,7 @@
 <!-- =================================================================
      SLIDE 6 — SCORING + FUNNEL
      ================================================================= -->
-<section data-slide="7">
+<section data-slide="7" data-tone="onyx">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">магия 2</span>
@@ -2476,7 +2574,7 @@
 <!-- =================================================================
      SLIDE 7 — CHANNELS (sticky-pin, scroll-progressive)
      ================================================================= -->
-<section class="pin-channels tall" data-slide="8" id="pinChannels">
+<section class="pin-channels tall" data-slide="8" data-tone="sepia" id="pinChannels">
   <div class="pin-channels-sticky">
     <div class="wrap">
       <div class="section-head" style="margin-bottom:24px">
@@ -2564,7 +2662,7 @@
 <!-- =================================================================
      SLIDE 8 — DATABASE
      ================================================================= -->
-<section data-slide="9">
+<section data-slide="9" data-tone="slate">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">магия 4</span>
@@ -2655,7 +2753,7 @@
 <!-- =================================================================
      SLIDE 9 — CANDIDATE HISTORY (sticky pin scrub)
      ================================================================= -->
-<section class="pin-history tall" data-slide="10" id="pinHistory">
+<section class="pin-history tall" data-slide="10" data-tone="sepia" id="pinHistory">
   <div class="pin-history-sticky">
     <div class="ph-text">
       <span class="eyebrow">магия 5</span>
@@ -2713,7 +2811,7 @@
 <!-- =================================================================
      SLIDE 10 — HR NOTIFICATION
      ================================================================= -->
-<section data-slide="11">
+<section data-slide="11" data-tone="sand">
   <div class="wrap">
     <div class="hr-grid">
       <div>
@@ -2844,12 +2942,12 @@
 <!-- =================================================================
      WHY US (NEW slide per Natalia's request — first-mover, unique)
      ================================================================= -->
-<section data-slide="12">
+<section data-slide="12" data-tone="sepia">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">почему alma</span>
-      <h2 class="anim-up delay-1">Не первый бот для найма. <em>Первый — глубокий.</em></h2>
-      <p class="anim-up delay-2">На рынке есть простые чат-боты для откликов. Они спрашивают пять вопросов и сваливают всё в таблицу. Мы делаем по-другому.</p>
+      <h2 class="anim-up delay-1">Первая <em>продуманная, глубокая</em> система найма для HoReCa.</h2>
+      <p class="anim-up delay-2">Не просто чат-бот для откликов. Полный цикл с памятью, аналитикой и адаптацией под вашу сеть.</p>
     </div>
 
     <div class="why-grid">
@@ -2890,12 +2988,12 @@
 <!-- =================================================================
      SLIDE 11 — STATUS
      ================================================================= -->
-<section data-slide="13">
+<section data-slide="13" data-tone="slate">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">статус</span>
-      <h2 class="anim-up delay-1">Это не презентация в воздух.</h2>
-      <p class="anim-up delay-2">Базовые модули собираются на проверенном движке, который работает в десятках наших проектов. Avito и hh подключаются через официальный API.</p>
+      <h2 class="anim-up delay-1"><em>За продуктом</em> стоит проверенный опыт.</h2>
+      <p class="anim-up delay-2">Базовые модули собраны на стеке, который уже работает в десятках наших клиентских проектов. Avito и hh подключаются через официальный API.</p>
     </div>
 
     <div class="status-grid">
@@ -2937,7 +3035,7 @@
 <!-- =================================================================
      SLIDE 12 — PRICING
      ================================================================= -->
-<section data-slide="14">
+<section data-slide="14" data-tone="slate">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">стоимость</span>
@@ -2981,7 +3079,7 @@
 <!-- =================================================================
      SLIDE 13 — ROADMAP
      ================================================================= -->
-<section data-slide="15">
+<section data-slide="15" data-tone="sepia">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow anim-up">дорожная карта</span>
@@ -3030,7 +3128,7 @@
 <!-- =================================================================
      SLIDE 14 — CTA
      ================================================================= -->
-<section class="cta" data-slide="16">
+<section class="cta" data-slide="16" data-tone="sand">
   <div class="wrap">
     <span class="eyebrow anim-up" style="display:inline-flex">запустим</span>
     <h2 class="anim-up delay-1">Пилот на одной точке. <em>30 дней.</em></h2>
@@ -3066,19 +3164,24 @@ const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 
 /* ============================================================
-   1. Theme switching (light slide detection on scroll)
+   1. Tone-aware navbar/rail switching
    ============================================================ */
-const themeSentinels = document.querySelectorAll('[data-theme="light"]');
-const lightObserver = new IntersectionObserver((entries) => {
+const toneSections = document.querySelectorAll('section[data-tone]');
+const toneObserver = new IntersectionObserver((entries) => {
+  // pick the section closest to top with highest intersection
+  let best = null;
   entries.forEach(e => {
-    if (e.isIntersecting && e.intersectionRatio > 0.3) {
-      document.body.classList.add('is-light');
-    } else if (!e.isIntersecting) {
-      document.body.classList.remove('is-light');
+    if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)){
+      best = e;
     }
   });
-}, { threshold: [0, 0.3, 0.6, 1] });
-themeSentinels.forEach(s => lightObserver.observe(s));
+  if (best){
+    const tone = best.target.dataset.tone || 'onyx';
+    document.body.classList.remove('is-tone-onyx', 'is-tone-sepia', 'is-tone-slate', 'is-tone-sand');
+    document.body.classList.add('is-tone-' + tone);
+  }
+}, { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: '-80px 0px -50% 0px' });
+toneSections.forEach(s => toneObserver.observe(s));
 
 /* ============================================================
    2. Progress rail (right side)
